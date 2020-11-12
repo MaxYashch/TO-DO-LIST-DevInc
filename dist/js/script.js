@@ -3,8 +3,9 @@ const todoInputTitle = document.querySelector('#inputTitle');
 const todoInputText = document.querySelector('#inputText');
 const todoButton = document.querySelector('.js-addButton');
 const todoList = document.querySelector('#currentTasks');
-const todoListCompleted = document.querySelector('.completedTasks');
+const todoListCompleted = document.querySelector('#completedTasks');
 const todoPriorityBtns = document.querySelectorAll('.form-check-label');
+
 
 todoButton.addEventListener('click', addTodo);
 
@@ -12,6 +13,7 @@ todoButton.addEventListener('click', addTodo);
 let priorityText;
 todoPriorityBtns.forEach(element => element.addEventListener('click', () => priorityText = element.getAttribute('for') + ' priority'
 ))
+
 
 function addTodo(e) {
     e.preventDefault();
@@ -80,8 +82,8 @@ function addTodo(e) {
     todoDivDropdown.setAttribute('aria-labelledby', 'dropdownMenuItem1');
     todoDivDropdown.setAttribute('x-placement', 'left-start');
     todoDivDropdown.setAttribute('style', 'position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-162px, 0px, 0px);');
-
     todoDivButtons.appendChild(todoDivDropdown);
+
     // create todo dropdown button complete
     const todoButtonComplete = document.createElement('button');
     todoButtonComplete.innerText = 'Complete';
@@ -98,23 +100,58 @@ function addTodo(e) {
     todoButtonDelete.classList.add('btn', 'btn-danger', 'w-100');
     todoDivDropdown.appendChild(todoButtonDelete);
 
-
-
-
-
-
     // append to list
     todoList.appendChild(todoLi);
     // clear todo input value
     todoInputTitle.value = '';
     todoInputText.value = '';
 
-    // add context popup comlete-edit-delete menu
-    // todo3ButtonsCont.addEventListener('click')
+    todoButtonDelete.addEventListener('click', deleteCheck)
+    function deleteCheck(e) {
+        const item = e.target;
 
+        if (item.classList.contains("btn-danger")) {
+            // e.target.parentElement.remove();
+            const todo = todoLi;
+            // todo.classList.add("fall");
+            //at the end
+            removeLocalTodos(todo);
+            todo.addEventListener("transitionend", () => {
+                todo.remove();
+            });
+        }
+    }
+
+    todoButtonComplete.addEventListener('click', completeCheck)
+    function completeCheck(e) {
+        const item = e.target;
+        if (item.classList.contains("btn-success")) {
+            const todo = todoLi;
+            todoListCompleted.appendChild(todo);
+        }
+    }
+
+    todoButtonEdit.addEventListener('click', editCheck)
+    function editCheck(e) {
+        const item = e.target;
+        if (item.classList.contains("btn-info")) {
+            const todo = todoLi;
+            todoH5Title.setAttribute('contentEditable', 'true');
+            todoH5Title.style.border = 'solid red 1px';
+            todoPText.setAttribute('contentEditable', 'true');
+            todoPText.style.border = 'solid red 1px';
+            document.addEventListener('keyup', (e) => {
+                if (e.keyCode == 27 || e.keyCode == 13) {
+                    todoH5Title.removeAttribute('contentEditable');
+                    todoH5Title.style.border = 'none';
+                    todoPText.removeAttribute('contentEditable');
+                    todoPText.style.border = 'none'
+                }
+            })
+            // todoListCompleted.appendChild(todo);
+        }
+    }
 }
-
-
 
 // add date and time to note
 function setTime() {
@@ -125,46 +162,15 @@ function setTime() {
     return dateTime;
 }
 
-
-
-
-// todoList.addEventListener('click', deleteCheck);
-// filterOption.addEventListener('click', filterTodo);
-
-
-
-
-function deleteCheck(e) {
-    const item = e.target;
-
-    // check mark
-    if (item.classList[ 0 ] === 'btn-success') {
-        const todo = item.parentElement;
-        todo.classList.toggle('completed');
+function removeLocalTodos(todo) {
+    let todos;
+    if (localStorage.getItem("todos") === null) {
+        todos = [];
+    } else {
+        todos = JSON.parse(localStorage.getItem("todos"));
     }
-
-    // edit todo
-    if (item.classList[ 0 ] === 'btn-info') {
-        const todo = item.parentElement;
-        todo.classList.toggle('edit');
-    }
-
-    // delete todo
-    if (item.classList[ 0 ] === 'btn-danger') {
-        const todo = item.parentElement;
-        // animation
-        todo.classList.add('fall');
-        removeLocalTodos(todo);
-        todo.addEventListener('transitionend', function () {
-            todo.remove();
-        })
-    }
+    const todoIndex = todo.children[ 0 ].innerText;
+    todos.splice(todos.indexOf(todoIndex), 1);
+    localStorage.setItem("todos", JSON.stringify(todos));
 }
-
-
-
-
-
-
-
 
