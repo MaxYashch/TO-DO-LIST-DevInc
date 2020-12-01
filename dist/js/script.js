@@ -32,7 +32,7 @@ function addTodo(e) {
     todoDivNote.appendChild(todoDivTitle);
     // create todo h5 Title
     const todoH5Title = document.createElement('h5');
-    todoH5Title.innerText = todoInputTitle.value;
+    todoH5Title.innerText = todoInputTitle.value.trim();
     todoH5Title.classList.add('mb-1');
     todoDivTitle.appendChild(todoH5Title);
 
@@ -48,11 +48,12 @@ function addTodo(e) {
     // create todo small time
     const todoSmallTime = document.createElement('small');
     todoSmallTime.innerText = setTime();
+    todoSmallTime.classList.add('timeToDo');
     todoDivPriorityTime.appendChild(todoSmallTime);
 
     // create todo p Text
     const todoPText = document.createElement('p');
-    todoPText.innerText = todoInputText.value;
+    todoPText.innerText = todoInputText.value.trim();
     todoPText.classList.add('mb-1', 'w-100');
     todoDivNote.appendChild(todoPText);
 
@@ -151,11 +152,54 @@ function addTodo(e) {
             // todoListCompleted.appendChild(todo);
         }
     }
+
+    // sort time & date up
+    const sortTimeUp = document.querySelector('.fa-sort-numeric-up-alt');
+
+    let timeToSort = document.querySelectorAll('small.timeToDo');
+
+    let sortedDate = [];
+
+    sortTimeUp.closest('button').addEventListener('click', (e) => {
+        e.preventDefault;
+        let arrayTimeValue = [];
+        timeToSort.forEach(item => {
+            // console.log(item.innerText);
+            arrayTimeValue.push(item.innerText);
+        });
+        sortedDate = arrayTimeValue.sort((a, b) => b.date - a.date);
+        console.log(sortedDate);
+    });
+
+    // sort time & date down
+    const sortTimeDown = document.querySelector('.fa-sort-numeric-up');
+
+    // let timeToSort = document.querySelectorAll('small.timeToDo');
+
+    // let sortedDate = [];
+
+    sortTimeDown.closest('button').addEventListener('click', () => {
+        let arrayTimeValue = [];
+
+        timeToSort.forEach(item => {
+
+
+            // console.log(item.innerText);
+            arrayTimeValue.push(item.innerText);
+        });
+        // sortedDate = arrayTimeValue.sort((a, b) => a.date - b.date);
+        sortedDate = arrayTimeValue.sort();
+        console.log(sortedDate);
+        console.log('aDDAD');
+    })
+
+
 }
 
 // add date and time to note
 function setTime() {
     let today = new Date();
+    // console.log(today);
     let date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
     let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     let dateTime = `${time} ${date}`;
@@ -174,3 +218,31 @@ function removeLocalTodos(todo) {
     localStorage.setItem("todos", JSON.stringify(todos));
 }
 
+// sort
+// const sortTimeUp = document.querySelector('.fa-sort-numeric-up-alt');
+
+// let timeToSort = document.querySelectorAll('small.timeToDo');
+
+// sortTimeUp.closest('button').addEventListener('click', function () {
+//     console.log(this);
+//     console.log('red');
+//     timeToSort.forEach(item => {
+
+//         console.log(item.innerText);
+//     });
+
+// })
+
+
+
+const sortTimeDown = document.querySelector('.fa-sort-numeric-up');
+
+
+// var $wrapper = $('.testWrapper');
+
+// $wrapper.find('.test').sort(function (a, b) {
+//     return +a.dataset.name - +b.dataset.name;
+// })
+// .appendTo( $wrapper );
+
+// https://jsfiddle.net/Markus_Steiger/uGYLC/
