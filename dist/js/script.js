@@ -6,7 +6,6 @@ const todoList = document.querySelector('#currentTasks');
 const todoListCompleted = document.querySelector('#completedTasks');
 const todoPriorityBtns = document.querySelectorAll('.form-check-label');
 
-
 todoButton.addEventListener('click', addTodo);
 
 // add priority record to note
@@ -15,12 +14,15 @@ todoPriorityBtns.forEach(element => element.addEventListener('click', () => prio
 ))
 
 
+
 function addTodo(e) {
     e.preventDefault();
 
     // create todo general li
     const todoLi = document.createElement('li');
     todoLi.classList.add('list-group-item', 'd-flex', 'w-100', 'mb-2');
+    // todoLi.setAttribute('data', setTime());
+    todoLi.setAttribute('data-date', setSortTime());
 
     // create todo general Note div
     const todoDivNote = document.createElement('div');
@@ -152,48 +154,37 @@ function addTodo(e) {
             // todoListCompleted.appendChild(todo);
         }
     }
+}
 
-    // sort time & date up
-    const sortTimeUp = document.querySelector('.fa-sort-numeric-up-alt');
+let timeToSort = $('.list-group-item');
 
-    let timeToSort = document.querySelectorAll('small.timeToDo');
+// sort time & date last-down
+const sortTimeDown = document.querySelector('.fa-sort-numeric-up-alt');
 
-    let sortedDate = [];
-
-    sortTimeUp.closest('button').addEventListener('click', (e) => {
-        e.preventDefault;
-        let arrayTimeValue = [];
-        timeToSort.forEach(item => {
-            // console.log(item.innerText);
-            arrayTimeValue.push(item.innerText);
-        });
-        sortedDate = arrayTimeValue.sort((a, b) => b.date - a.date);
-        console.log(sortedDate);
+sortTimeDown.closest('button').addEventListener('click', function(){
+    console.log('start');
+    timeToSort.sort(function(a, b){
+        return $(a).data("date")-$(b).data("date")
     });
+    $("#currentTasks").html(timeToSort);
+    console.log('end');
+});
 
-    // sort time & date down
-    const sortTimeDown = document.querySelector('.fa-sort-numeric-up');
+const sortTimeUp = document.querySelector('.fa-sort-numeric-up');
 
-    // let timeToSort = document.querySelectorAll('small.timeToDo');
-
-    // let sortedDate = [];
-
-    sortTimeDown.closest('button').addEventListener('click', () => {
-        let arrayTimeValue = [];
-
-        timeToSort.forEach(item => {
-
-
-            // console.log(item.innerText);
-            arrayTimeValue.push(item.innerText);
-        });
-        // sortedDate = arrayTimeValue.sort((a, b) => a.date - b.date);
-        sortedDate = arrayTimeValue.sort();
-        console.log(sortedDate);
-        console.log('aDDAD');
-    })
+sortTimeUp.closest('button').addEventListener('click', function(){
+    console.log('end');
+    timeToSort.sort(function(a, b){
+        return $(b).data("date")-$(a).data("date")
+    });
+    $("#currentTasks").html(timeToSort);
+    console.log('start');
+});
 
 
+
+function setSortTime() {
+    return Date.now()
 }
 
 // add date and time to note
@@ -218,31 +209,3 @@ function removeLocalTodos(todo) {
     localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-// sort
-// const sortTimeUp = document.querySelector('.fa-sort-numeric-up-alt');
-
-// let timeToSort = document.querySelectorAll('small.timeToDo');
-
-// sortTimeUp.closest('button').addEventListener('click', function () {
-//     console.log(this);
-//     console.log('red');
-//     timeToSort.forEach(item => {
-
-//         console.log(item.innerText);
-//     });
-
-// })
-
-
-
-const sortTimeDown = document.querySelector('.fa-sort-numeric-up');
-
-
-// var $wrapper = $('.testWrapper');
-
-// $wrapper.find('.test').sort(function (a, b) {
-//     return +a.dataset.name - +b.dataset.name;
-// })
-// .appendTo( $wrapper );
-
-// https://jsfiddle.net/Markus_Steiger/uGYLC/
