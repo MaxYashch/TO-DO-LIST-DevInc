@@ -156,33 +156,6 @@ function addTodo(e) {
     }
 }
 
-let timeToSort = $('.list-group-item');
-
-// sort time & date last-down
-const sortTimeDown = document.querySelector('.fa-sort-numeric-up-alt');
-
-sortTimeDown.closest('button').addEventListener('click', function(){
-    console.log('start');
-    timeToSort.sort(function(a, b){
-        return $(a).data("date")-$(b).data("date")
-    });
-    $("#currentTasks").html(timeToSort);
-    console.log('end');
-});
-
-const sortTimeUp = document.querySelector('.fa-sort-numeric-up');
-
-sortTimeUp.closest('button').addEventListener('click', function(){
-    console.log('end');
-    timeToSort.sort(function(a, b){
-        return $(b).data("date")-$(a).data("date")
-    });
-    $("#currentTasks").html(timeToSort);
-    console.log('start');
-});
-
-
-
 function setSortTime() {
     return Date.now()
 }
@@ -208,4 +181,33 @@ function removeLocalTodos(todo) {
     todos.splice(todos.indexOf(todoIndex), 1);
     localStorage.setItem("todos", JSON.stringify(todos));
 }
+
+
+// let timeToSort = $('.list-group-item');
+let timeToSortArray = Array.from($('.list-group-item'));
+
+// sort time & date last-down
+const sortTimeDown = document.querySelector('.fa-sort-numeric-up-alt');
+
+sortTimeDown.closest('button').addEventListener('click', function(e){
+    e.preventDefault();
+    console.log('start');
+    timeToSortArray.sort(function(a, b){
+        return $(a).data("date")-$(b).data("date")
+    });
+    $("#currentTasks").html(timeToSortArray);
+    console.log('end');
+});
+
+const sortTimeUp = document.querySelector('.fa-sort-numeric-up');
+
+sortTimeUp.closest('button').addEventListener('click', function(e){
+    e.preventDefault();
+    console.log('end');
+    console.log(timeToSortArray);
+    timeToSortArray.sort(function(a, b){
+        return $(b).data("date")-$(a).data("date")
+    });
+    $("#currentTasks").html(timeToSortArray);
+});
 
