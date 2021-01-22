@@ -11,9 +11,9 @@ todoButton.addEventListener('click', addTodo);
 // add priority record to note
 let priorityText;
 todoPriorityBtns.forEach(element => element.addEventListener('click', () => priorityText = element.getAttribute('for') + ' priority'
-))
+));
 
-
+let dataElement;
 
 function addTodo(e) {
     e.preventDefault();
@@ -23,6 +23,7 @@ function addTodo(e) {
     todoLi.classList.add('list-group-item', 'd-flex', 'w-100', 'mb-2');
     // todoLi.setAttribute('data', setTime());
     todoLi.setAttribute('data-date', setSortTime());
+    
 
     // create todo general Note div
     const todoDivNote = document.createElement('div');
@@ -154,6 +155,7 @@ function addTodo(e) {
             // todoListCompleted.appendChild(todo);
         }
     }
+    
 }
 
 function setSortTime() {
@@ -183,31 +185,57 @@ function removeLocalTodos(todo) {
 }
 
 
-// let timeToSort = $('.list-group-item');
-let timeToSortArray = Array.from($('.list-group-item'));
+// let timeToSortArray = Array.from($('.list-group-item'));
+let timeToSortArray = document.querySelectorAll('.list-group-item');
+
 
 // sort time & date last-down
 const sortTimeDown = document.querySelector('.fa-sort-numeric-up-alt');
 
-sortTimeDown.closest('button').addEventListener('click', function(e){
-    e.preventDefault();
+sortTimeDown.closest('button').addEventListener('click', function(){
     console.log('start');
     timeToSortArray.sort(function(a, b){
-        return $(a).data("date")-$(b).data("date")
+       return $(a).data("date")-$(b).data("date")
     });
-    $("#currentTasks").html(timeToSortArray);
+    // $("#currentTasks").html(timeToSortArray);
     console.log('end');
 });
 
 const sortTimeUp = document.querySelector('.fa-sort-numeric-up');
 
-sortTimeUp.closest('button').addEventListener('click', function(e){
-    e.preventDefault();
-    console.log('end');
+sortTimeUp.closest('button').addEventListener('click', function(){
+    // console.log('end');
+    // console.log(timeToSortArray);
+    // timeToSortArray.sort(function(a, b){
+    //     return $(b).data("date")-$(a).data("date")
+    // });
+    // // $("#currentTasks").html(timeToSortArray);
+    // console.log('start');
     console.log(timeToSortArray);
-    timeToSortArray.sort(function(a, b){
-        return $(b).data("date")-$(a).data("date")
-    });
-    $("#currentTasks").html(timeToSortArray);
+
 });
 
+// dataElement = [
+//     {
+//         data: '',
+//         name: '',
+//         done: false,
+//     }
+// ];
+
+// for (let key of dataElement) {
+//     dataElement.key.data.push(timeToSortArray.data('date'));
+// };
+
+// console.log(dataElement);
+
+
+// function draw() {
+//     let result = '';
+    
+//     data.forEach(item => {
+//         result += `<span>task: ${item.name} status: ${item.done}</span>`
+//     });
+    
+//     $('.my-list').html(result)
+//     }
